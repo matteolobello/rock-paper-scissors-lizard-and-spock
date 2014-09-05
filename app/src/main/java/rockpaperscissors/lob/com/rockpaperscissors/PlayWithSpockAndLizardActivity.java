@@ -29,6 +29,11 @@ public class PlayWithSpockAndLizardActivity extends Activity {
     static ImageView yourchoice;
     static TextView opponent;
     static TextView you;
+    static ImageButton rock;
+    static ImageButton paper;
+    static ImageButton scissors;
+    static ImageButton lizard;
+    static ImageButton spock;
 
     static String youlost;
     static String youwon;
@@ -78,21 +83,13 @@ public class PlayWithSpockAndLizardActivity extends Activity {
             youwonthematch = "You won the match!";
         }
 
-        getWindow().getDecorView()
-                .setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                );
+        setImmersiveMode();
 
-        ImageButton rock = (ImageButton) findViewById(R.id.imageButton);
-        ImageButton paper = (ImageButton) findViewById(R.id.imageButton2);
-        ImageButton scissors = (ImageButton) findViewById(R.id.imageButton3);
-        ImageButton lizard = (ImageButton) findViewById(R.id.imageButton4);
-        ImageButton spock = (ImageButton) findViewById(R.id.imageButton5);
+        rock = (ImageButton) findViewById(R.id.imageButton);
+        paper = (ImageButton) findViewById(R.id.imageButton2);
+        scissors = (ImageButton) findViewById(R.id.imageButton3);
+        lizard = (ImageButton) findViewById(R.id.imageButton4);
+        spock = (ImageButton) findViewById(R.id.imageButton5);
 
 
         rock.setOnClickListener(new View.OnClickListener() {
@@ -337,22 +334,12 @@ public class PlayWithSpockAndLizardActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.play, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        /* int id = item.getItemId();
-         *if (id == R.id.action_exit) {
-         *   android.os.Process.killProcess(android.os.Process.myPid());
-         *   return true;
-         } */
         return super.onOptionsItemSelected(item);
     }
 
@@ -393,15 +380,7 @@ public class PlayWithSpockAndLizardActivity extends Activity {
 
                     dialog.dismiss();
 
-                    getWindow().getDecorView()
-                            .setSystemUiVisibility(
-                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            );
+                    setImmersiveMode();
                 }
             });
             builder.setNegativeButton(stopplaying, new DialogInterface.OnClickListener() {
@@ -414,15 +393,7 @@ public class PlayWithSpockAndLizardActivity extends Activity {
 
                     dialog.dismiss();
 
-                    getWindow().getDecorView()
-                            .setSystemUiVisibility(
-                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            );
+                    setImmersiveMode();
                 }
             });
             builder.show();
@@ -448,15 +419,7 @@ public class PlayWithSpockAndLizardActivity extends Activity {
 
                     dialog.dismiss();
 
-                    getWindow().getDecorView()
-                            .setSystemUiVisibility(
-                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            );
+                    setImmersiveMode();
                 }
             });
             builder.setNegativeButton(stopplaying, new DialogInterface.OnClickListener() {
@@ -469,15 +432,7 @@ public class PlayWithSpockAndLizardActivity extends Activity {
 
                     dialog.dismiss();
 
-                    getWindow().getDecorView()
-                            .setSystemUiVisibility(
-                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            );
+                    setImmersiveMode();
                 }
             });
             builder.show();
@@ -491,7 +446,10 @@ public class PlayWithSpockAndLizardActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        setImmersiveMode();
+    }
 
+    void setImmersiveMode() {
         getWindow().getDecorView()
                 .setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
