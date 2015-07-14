@@ -16,4 +16,14 @@
     <string name="gplus">Go to my G+ Profile \nand follow me!</string>
     <string name="spockandlizard">Play now with Spock and the Lizard!</string>
 
+    <string name="youlost">You lost!</string>
+    <string name="youwon">You won!</string>
+    <string name="keepplaying">Keep playing</string>
+    <string name="stopplaying">Maybe later...</string>
+    <string name="draw">Draw!</string>
+    <string name="goodjob">Good Job!</string>
+    <string name="youlostthematch">You lost the match</string>
+    <string name="youwonthematch">You won the match!</string>
+    <string name="ohno">Oh no!</string>
+
 </resources>

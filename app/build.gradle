@@ -7,16 +7,16 @@ android {
     defaultConfig {
         applicationId "rockpaperscissors.lob.com.rockpaperscissors"
         minSdkVersion 19
-        targetSdkVersion 20
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
-    buildTypes {
-        release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+//    buildTypes {
+//        release {
+//            runProguard false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
 }
 
 dependencies {

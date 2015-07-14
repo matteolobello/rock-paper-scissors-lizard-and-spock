@@ -8,164 +8,178 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Locale;
 import java.util.Random;
 
+import rockpaperscissors.lob.com.rockpaperscissors.Helpers.ImmersiveMode;
+import static rockpaperscissors.lob.com.rockpaperscissors.Helpers.Constants.*;
 
 public class PlayActivity extends Activity {
 
-    static final int max = 3;
-    static final int min = 1;
-    static int mustRefresh = 0;
-    static int youscore = 0;
-    static int hisscore = 0;
+    private TextView scoreTextView;
+    private ImageView opponentImageView;
+    private ImageView yourChoiceImageView;
+    private TextView opponentTextView;
+    private TextView youTextView;
+    private ImageButton rockImageButton;
+    private ImageButton paperImageButton;
+    private ImageButton scissorsImageButton;
 
-    static TextView tv;
-    static ImageView iv;
-    static ImageView yourchoice;
-    static TextView opponent;
-    static TextView you;
-    static ImageButton rock;
-    static ImageButton paper;
-    static ImageButton scissors;
+    private int mustRefresh = 0;
+    private int yourscore = 0;
+    private int hisscore = 0;
 
-    static String youlost;
-    static String youwon;
-    static String keepplaying;
-    static String stopplaying;
-    static String draw;
-    static String goodjob;
-    static String youlostthematch;
-    static String youwonthematch;
-    static String ohno = "Oh no!";
+    private String youlost;
+    private String youwon;
+    private String keepplaying;
+    private String stopplaying;
+    private String draw;
+    private String goodjob;
+    private String youlostthematch;
+    private String youwonthematch;
+    private String ohno;
+
+    private Window window;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-        opponent = (TextView)findViewById(R.id.textView3);
-        you = (TextView)findViewById(R.id.textView4);
+        window = getWindow();
 
-        yourchoice = (ImageView)findViewById(R.id.imageView2);
+        opponentTextView = (TextView) findViewById(R.id.textView3);
+        youTextView = (TextView) findViewById(R.id.textView4);
 
-        tv = (TextView)findViewById(R.id.textView);
-        tv.setVisibility(View.GONE);
+        yourChoiceImageView = (ImageView) findViewById(R.id.imageView2);
 
-        iv = (ImageView)findViewById(R.id.imageView);
+        scoreTextView = (TextView) findViewById(R.id.textView);
+        scoreTextView.setVisibility(View.GONE);
 
-        ActionBar ab = getActionBar();
-        ab.hide();
+        opponentImageView = (ImageView) findViewById(R.id.imageView);
 
-        if (Locale.getDefault().getLanguage().equals("it")) {
-            youlost = "Hai Perso!";
-            youwon = "Hai Vinto!";
-            keepplaying = "Continua a giocare";
-            stopplaying = "Forse dopo...";
-            draw = "Pareggio";
-            goodjob = "Bravo!";
-            youlostthematch = "Hai perso la partita";
-            youwonthematch = "Hai vinto la partita!";
-        } else {
-            youlost = "You lost!";
-            youwon = "You won!";
-            keepplaying = "Keep playing";
-            stopplaying = "Maybe later...";
-            draw = "Draw";
-            goodjob = "Good Job!";
-            youlostthematch = "You lost the match";
-            youwonthematch = "You won the match!";
-        }
+        try {
+            ActionBar actionBar = getActionBar();
+            actionBar.hide();
+        } catch (NullPointerException ignored) {}
 
-        setImmersiveMode();
+        youlost = getStringFromResource(R.string.youlost);
+        youwon = getStringFromResource(R.string.youwon);
+        keepplaying = getStringFromResource(R.string.keepplaying);
+        stopplaying = getStringFromResource(R.string.stopplaying);
+        draw = getStringFromResource(R.string.draw);
+        goodjob = getStringFromResource(R.string.goodjob);
+        youlostthematch = getStringFromResource(R.string.youlostthematch);
+        youwonthematch = getStringFromResource(R.string.youwonthematch);
+        ohno = getStringFromResource(R.string.ohno);
 
-        rock = (ImageButton)findViewById(R.id.imageButton);
-        paper = (ImageButton)findViewById(R.id.imageButton2);
-        scissors = (ImageButton)findViewById(R.id.imageButton3);
+        rockImageButton = (ImageButton) findViewById(R.id.imageButton);
+        paperImageButton = (ImageButton) findViewById(R.id.imageButton2);
+        scissorsImageButton = (ImageButton) findViewById(R.id.imageButton3);
 
-        rock.setOnClickListener(new View.OnClickListener() {
+        ImmersiveMode.setImmersiveMode(window);
+
+        rockImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                yourchoice.setImageResource(R.drawable.rock);
-                yourchoice.setVisibility(View.VISIBLE);
+                yourChoiceImageView.setImageResource(R.drawable.rock);
+                yourChoiceImageView.setVisibility(View.VISIBLE);
 
                 mustRefresh++;
                 if (mustRefresh == 2) {
-                    iv.setVisibility(View.GONE); mustRefresh = 0;
+                    opponentImageView.setVisibility(View.GONE);
+                    mustRefresh = 0;
                 } else {
-                    iv.setVisibility(View.VISIBLE);
+                    opponentImageView.setVisibility(View.VISIBLE);
                 }
                 Random r = new Random();
-                int random = r.nextInt((max - min) + 1) + min;
+                int random = r.nextInt((MAX_NORMAL_MODE - MIN) + 1) + MIN;
                 switch (random) {
                     case 1:
-                        iv.setVisibility(View.VISIBLE);
-                        iv.setImageResource(R.drawable.rockdown);
-                        draw();
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.rockdown);
+                        sendScore(DRAW);
                         break;
                     case 2:
-                        iv.setVisibility(View.VISIBLE);
-                        iv.setImageResource(R.drawable.paperdown);
-                        lose();
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.paperdown);
+                        sendScore(LOSE);
                         break;
                     case 3:
-                        iv.setVisibility(View.VISIBLE);
-                        iv.setImageResource(R.drawable.scissorsdown);
-                        win();
-                        break;
-                }
-            }
-        });
-
-        paper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                yourchoice.setImageResource(R.drawable.paper);
-                yourchoice.setVisibility(View.VISIBLE);
-                if (mustRefresh == 2) { iv.setVisibility(View.GONE); mustRefresh = 0; } else { iv.setVisibility(View.VISIBLE); }
-                Random r = new Random();
-                int random = r.nextInt((max - min) + 1) + min;
-                switch (random) {
-                    case 1:
-                        iv.setImageResource(R.drawable.rockdown);
-                        win();
-                        break;
-                    case 2:
-                        iv.setImageResource(R.drawable.paperdown);
-                        draw();
-                        break;
-                    case 3:
-                        iv.setImageResource(R.drawable.scissorsdown);
-                        lose();
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.scissorsdown);
+                        sendScore(WIN);
                         break;
                 }
             }
         });
 
-        scissors.setOnClickListener(new View.OnClickListener() {
+        paperImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                yourchoice.setImageResource(R.drawable.scissors);
-                yourchoice.setVisibility(View.VISIBLE);
-                if (mustRefresh == 2) { iv.setVisibility(View.GONE); mustRefresh = 0; } else { iv.setVisibility(View.VISIBLE); }
+                yourChoiceImageView.setImageResource(R.drawable.paper);
+                yourChoiceImageView.setVisibility(View.VISIBLE);
+                if (mustRefresh == 2) {
+                    opponentImageView.setVisibility(View.GONE);
+                    mustRefresh = 0;
+                } else {
+                    opponentImageView.setVisibility(View.VISIBLE);
+                }
                 Random r = new Random();
-                int random = r.nextInt((max - min) + 1) + min;
+                int random = r.nextInt((MAX_NORMAL_MODE - MIN) + 1) + MIN;
                 switch (random) {
                     case 1:
-                        iv.setImageResource(R.drawable.rockdown);
-                        lose();
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.rockdown);
+                        sendScore(WIN);
                         break;
                     case 2:
-                        iv.setImageResource(R.drawable.paperdown);
-                        win();
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.paperdown);
+                        sendScore(DRAW);
                         break;
                     case 3:
-                        iv.setImageResource(R.drawable.scissorsdown);
-                        draw();
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.scissorsdown);
+                        sendScore(LOSE);
+                        break;
+                }
+            }
+        });
+
+        scissorsImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                yourChoiceImageView.setImageResource(R.drawable.scissors);
+                yourChoiceImageView.setVisibility(View.VISIBLE);
+
+                if (mustRefresh == 2) {
+                    opponentImageView.setVisibility(View.GONE);
+                    mustRefresh = 0;
+                } else {
+                    opponentImageView.setVisibility(View.VISIBLE);
+                }
+                Random r = new Random();
+                int random = r.nextInt((MAX_NORMAL_MODE - MIN) + 1) + MIN;
+                switch (random) {
+                    case 1:
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.rockdown);
+                        sendScore(LOSE);
+                        break;
+                    case 2:
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.paperdown);
+                        sendScore(WIN);
+                        break;
+                    case 3:
+                        opponentImageView.setVisibility(View.VISIBLE);
+                        opponentImageView.setImageResource(R.drawable.scissorsdown);
+                        sendScore(DRAW);
                         break;
                 }
             }
@@ -184,28 +198,41 @@ public class PlayActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    void draw() {
-        tv.setVisibility(View.VISIBLE);
-        tv.setText(draw);
-        plusoneforboth();
+    private String getStringFromResource(int res) {
+        return getResources().getString(res);
     }
 
-    void lose() {
-        tv.setVisibility(View.VISIBLE);
-        tv.setText(youlost);
-        plusoneforopponent();
+    private void sendScore(int score) {
+        if (score == WIN)
+            win();
+        else if (score == DRAW)
+            draw();
+        else
+            lose();
     }
 
-    void win() {
-        tv.setVisibility(View.VISIBLE);
-        tv.setText(youwon);
-        plusoneforyou();
+    private void draw() {
+        scoreTextView.setVisibility(View.VISIBLE);
+        scoreTextView.setText(draw);
+        plusOneForBoth();
     }
 
-    void plusoneforyou() {
-        youscore++;
-        you.setText(String.valueOf(youscore));
-        if (youscore == 5) {
+    private void lose() {
+        scoreTextView.setVisibility(View.VISIBLE);
+        scoreTextView.setText(youlost);
+        plusOneForOpponent();
+    }
+
+    private void win() {
+        scoreTextView.setVisibility(View.VISIBLE);
+        scoreTextView.setText(youwon);
+        plusOneForYou();
+    }
+
+    private void plusOneForYou() {
+        yourscore++;
+        youTextView.setText(String.valueOf(yourscore));
+        if (yourscore == 5) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(goodjob);
             builder.setMessage(youwonthematch);
@@ -215,13 +242,13 @@ public class PlayActivity extends Activity {
                 public void onClick(DialogInterface dialog, int which) {
 
                     hisscore = 0;
-                    youscore = 0;
-                    opponent.setText(String.valueOf(hisscore));
-                    you.setText(String.valueOf(youscore));
+                    yourscore = 0;
+                    opponentTextView.setText(String.valueOf(hisscore));
+                    youTextView.setText(String.valueOf(yourscore));
 
                     dialog.dismiss();
 
-                    setImmersiveMode();
+                    ImmersiveMode.setImmersiveMode(window);
                 }
             });
             builder.setNegativeButton(stopplaying, new DialogInterface.OnClickListener() {
@@ -229,21 +256,21 @@ public class PlayActivity extends Activity {
                 public void onClick(DialogInterface dialog, int which) {
 
                     hisscore = 0;
-                    youscore = 0;
+                    yourscore = 0;
                     finish();
 
                     dialog.dismiss();
 
-                    setImmersiveMode();
+                    ImmersiveMode.setImmersiveMode(window);
                 }
             });
             builder.show();
         }
     }
 
-    void plusoneforopponent() {
+    private void plusOneForOpponent() {
         hisscore++;
-        opponent.setText(String.valueOf(hisscore));
+        opponentTextView.setText(String.valueOf(hisscore));
         if (hisscore == 5) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(ohno);
@@ -254,13 +281,13 @@ public class PlayActivity extends Activity {
                 public void onClick(DialogInterface dialog, int which) {
 
                     hisscore = 0;
-                    youscore = 0;
-                    opponent.setText(String.valueOf(hisscore));
-                    you.setText(String.valueOf(youscore));
+                    yourscore = 0;
+                    opponentTextView.setText(String.valueOf(hisscore));
+                    youTextView.setText(String.valueOf(yourscore));
 
                     dialog.dismiss();
 
-                    setImmersiveMode();
+                    ImmersiveMode.setImmersiveMode(window);
                 }
             });
             builder.setNegativeButton(stopplaying, new DialogInterface.OnClickListener() {
@@ -268,37 +295,25 @@ public class PlayActivity extends Activity {
                 public void onClick(DialogInterface dialog, int which) {
 
                     hisscore = 0;
-                    youscore = 0;
+                    yourscore = 0;
                     finish();
 
                     dialog.dismiss();
 
-                    setImmersiveMode();
+                    ImmersiveMode.setImmersiveMode(window);
                 }
             });
             builder.show();
         }
     }
 
-    static void plusoneforboth() {
-        //nothing...
+    private void plusOneForBoth() {
+        // nothing to do...
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        setImmersiveMode();
-    }
-
-    void setImmersiveMode() {
-        getWindow().getDecorView()
-                .setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                );
+        ImmersiveMode.setImmersiveMode(getWindow());
     }
 }
