@@ -69,15 +69,15 @@ public class PlayWithSpockAndLizardActivity extends Activity {
             actionBar.hide();
         } catch (NullPointerException ignored) {}
 
-        youlost = getStringFromResource(R.string.youlost);
-        youwon = getStringFromResource(R.string.youwon);
-        keepplaying = getStringFromResource(R.string.keepplaying);
-        stopplaying = getStringFromResource(R.string.stopplaying);
-        draw = getStringFromResource(R.string.draw);
-        goodjob = getStringFromResource(R.string.goodjob);
-        youlostthematch = getStringFromResource(R.string.youlostthematch);
-        youwonthematch = getStringFromResource(R.string.youwonthematch);
-        ohno = getStringFromResource(R.string.ohno);
+        youlost = getString(R.string.youlost);
+        youwon = getString(R.string.youwon);
+        keepplaying = getString(R.string.keepplaying);
+        stopplaying = getString(R.string.stopplaying);
+        draw = getString(R.string.draw);
+        goodjob = getString(R.string.goodjob);
+        youlostthematch = getString(R.string.youlostthematch);
+        youwonthematch = getString(R.string.youwonthematch);
+        ohno = getString(R.string.ohno);
 
         rockImageButton = (ImageButton) findViewById(R.id.imageButton);
         paperImageButton = (ImageButton) findViewById(R.id.imageButton2);
@@ -314,10 +314,6 @@ public class PlayWithSpockAndLizardActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-
-    private String getStringFromResource(int res) {
-        return getResources().getString(res);
     }
 
     private void sendScore(int score) {
